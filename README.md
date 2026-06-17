@@ -1,6 +1,8 @@
 # @ftod/verdict
 
-Honest dependency linting. Reads your package.json and tells you the truth about every dependency — what it actually adds, how heavy it is, whether you could replace it with stdlib.
+You install packages without thinking. `lodash` for one function. `moment` when `Intl` works. `axios` when `fetch` is built in.
+
+This CLI reads your `package.json` and tells you the truth about every dependency.
 
 ## Install
 
@@ -8,7 +10,7 @@ Honest dependency linting. Reads your package.json and tells you the truth about
 npm install -g @ftod/verdict
 ```
 
-Or run directly with npx:
+Or just run it:
 
 ```bash
 npx @ftod/verdict
@@ -16,48 +18,30 @@ npx @ftod/verdict
 
 ## Usage
 
-### Audit cwd's package.json
-
 ```bash
+# Audit cwd
 verdict
-```
 
-### Audit specific project
-
-```bash
+# Audit specific project
 verdict --path ../some-project
-```
 
-### Audit a specific package (without installing)
-
-```bash
+# Audit single package
 verdict --package lodash
-```
 
-### JSON output for scripting / CI
-
-```bash
+# JSON for CI
 verdict --json
-```
 
-### Only show problems (hide CLEAN packages)
-
-```bash
+# Only show problems
 verdict --problems-only
-```
 
-### Strict mode (exit code 1 if problems found)
-
-```bash
+# Exit 1 if problems found
 verdict --strict
 ```
 
-## Sample Output
+## What you get
 
 ```
 @ftod/verdict — honest dependency verdicts
-
-Scanning ./package.json
 
 PACKAGE          TYPE          CATEGORY     SIZE      VERDICT
 ─────────────────────────────────────────────────────────────────────
@@ -77,38 +61,35 @@ typescript       devDependency ✅ CLEAN      ~60MB     Essential. Keep.
 You could save ~172KB by replacing OVERKILL and NATIVE_ALT packages.
 ```
 
-## Verdict Categories
+## Categories
 
-| Category | Symbol | Meaning |
-|----------|--------|---------|
-| **OVERKILL** | ❌ | Huge package used for something trivial. Replace immediately. |
-| **NATIVE ALT** | ⚠️ | Built-in Node.js/browser alternative exists. Drop the dep. |
-| **HEAVY** | ⚠️ | Reasonable package but large footprint. Justify the cost. |
-| **CLEAN** | ✅ | Lightweight, well-maintained, no native alternative. Keep it. |
-| **STDLIB** | ✅ | Built-in module, no dep needed. |
-| **UNKNOWN** | ❓ | Not in verdict DB. No judgment (v1 limitation). |
+- ❌ **OVERKILL** — Huge package, trivial use. Replace now.
+- ⚠️ **NATIVE_ALT** — Built-in alternative exists. Drop it.
+- ⚠️ **HEAVY** — Large footprint. Justify the cost.
+- ✅ **CLEAN** — Lightweight, no native alternative. Keep.
+- ✅ **STDLIB** — Built-in module. No dep needed.
+- ❓ **UNKNOWN** — Not in verdict DB. No judgment yet.
 
 ## Flags
 
 | Flag | Default | Description |
 |------|---------|-------------|
-| `--path` | `.` (cwd) | Path to project root containing package.json |
-| `--package` | — | Audit a single package by name (skip scanning) |
-| `--json` | — | Output JSON instead of table |
-| `--problems-only` | — | Hide CLEAN/STDLIB packages, show only issues |
-| `--strict` | — | Exit code 1 if any OVERKILL or HEAVY packages found |
+| `--path` | `.` | Path to project root |
+| `--package` | — | Audit single package |
+| `--json` | — | JSON output |
+| `--problems-only` | — | Show only issues |
+| `--strict` | — | Exit 1 if problems found |
 
-## v1 Limitations
+## v1 limitations
 
-- **Offline only:** Verdict database is hardcoded for ~50 common packages
-- **Static analysis:** No actual bundle size measurement
-- **Direct deps only:** No transitive dependency analysis
-- **No auto-fix:** Cannot auto-replace packages
-- **No security audit:** npm audit is a separate concern
+- Offline only. Hardcoded verdicts for ~50 common packages.
+- Static analysis. No actual bundle size measurement.
+- Direct deps only. No transitive analysis.
+- No auto-fix. No security audit.
 
 ## Contributing
 
-Want to add a verdict? Edit `src/verdicts.ts` and submit a PR!
+Add a verdict? Edit `src/verdicts.ts`, submit a PR.
 
 ## License
 
