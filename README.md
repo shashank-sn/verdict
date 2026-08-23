@@ -1,5 +1,7 @@
 # @ftod/verdict
 
+> **distribution status (2026-08-23):** this package is not published on npm. the install commands below will fail until a release exists.
+
 You install packages without thinking. `lodash` for one function. `moment` when `Intl` works. `axios` when `fetch` is built in.
 
 This CLI reads your `package.json` and tells you the truth about every dependency.
